@@ -1,0 +1,14 @@
+package de.tuhh.diss.plotbot;
+
+public class Anchor implements Plottable{
+	
+	private int Size;
+	
+	private Anchor(int size){
+		Size = size;
+	}
+	
+	public void plot(PlotbotControl pc){
+		// put your plot routine in here
+	}
+}

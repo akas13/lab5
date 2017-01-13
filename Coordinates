@@ -1,0 +1,6 @@
+package de.tuhh.diss.plotbot;
+
+public class Coordinates {
+//holds values for coordinates of motor (rotational) and drawing (x,y)
+	
+}

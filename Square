@@ -1,0 +1,16 @@
+package de.tuhh.diss.plotbot;
+
+public class Square {
+	
+	private int Size;
+	private boolean Diamond;
+	
+	private Square(int size, boolean diamond){
+		Size = size;
+		Diamond = diamond;
+	}
+	
+	public void drawSquare(){
+		
+	}
+}

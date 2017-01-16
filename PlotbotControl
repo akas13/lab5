@@ -1,6 +1,7 @@
+package de.tuhh.diss.plotbot;
 import lejos.nxt.*;
 
-package de.tuhh.diss.plotbot;
+
 
 /**
  * This Class is used for control of the plotting robot. A great amount of time should spend for controlling the robot.
@@ -9,7 +10,7 @@ package de.tuhh.diss.plotbot;
  * Hint: Create an instance of PlotBotControl inside the class Plotbot and  * pass the PlotBotControl when calling the
  * method plot of the selected shape.
  */
-public class PlotbotControl implements SensorPortListner{
+public class PlotbotControl implements SensorPortListener{
 	private int StartDis;
 	private int WheelDiam;
 	private int PenArmLength;
@@ -21,11 +22,12 @@ public class PlotbotControl implements SensorPortListner{
 	private LightSensor light;
 	private TouchSensor touchSwivel;			//Touch sensor for the swivel arm
 	private TouchSensor touchPen;
-	private final int ORIGIN;
-	private final int ARMMAX;
-	private final int PENMAX;
+	private int ORIGIN;
+	private int ARMMAX;
+	private int PENMAX;
+	private int ZEROPOSITIONARM;
 
-	private PlotbotControl(){
+	public PlotbotControl(){
 		WheelDiam=56;
 		StartDis=230;
 		PenArmLength=80;
@@ -42,7 +44,7 @@ public class PlotbotControl implements SensorPortListner{
 	}
 	
 	public boolean SwivelPen (int degree){
-		boolean up;
+		boolean up=false;
 		Motor.B.rotateTo(degree);			//Still need to account for the MAX position of the pen
 		return up;
 	}
@@ -58,19 +60,35 @@ public class PlotbotControl implements SensorPortListner{
 		light = new LightSensor(SensorPort.S3, false);
 		touchSwivel = new TouchSensor(SensorPort.S1);
 		touchPen = new TouchSensor(SensorPort.S2);
+		
 		while (light.getLightValue() > LightBool){
-			Motor.C.backward();
+			Motor.C.forward();
 		}
 		ORIGIN = Motor.C.getPosition();
+		
+		ZEROPOSITIONARM = Motor.A.getPosition(); 
 		while (touchSwivel.isPressed() != true){
 			Motor.A.forward();
 		}
 		ARMMAX = Motor.A.getPosition();
+		Motor.A.rotateTo(ZEROPOSITIONARM);
+		
 		while (touchPen.isPressed() != true){
 			Motor.B.backward();
 		}
 		PENMAX = Motor.B.getPosition();
+		calibration = true;
 		return calibration;
 	}
+
+	@Override
+	public void stateChanged(SensorPort arg0, int arg1, int arg2) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
-}
+		
+	}
+	
+

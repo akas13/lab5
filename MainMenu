@@ -1,33 +1,59 @@
 package de.tuhh.diss.plotbot;
 
-import de.tuhh.diss.harborstorage.sim.StorageException;
-import de.tuhh.diss.io.SimpleIO;
+
+import lejos.nxt.*; 
 import lejos.nxt.Button;
 import lejos.util.TextMenu;
 
-public class MainMenu {
+public class MainMenu implements ButtonListener {
 
-	private static final String[] ITEMS = {"Anchor"};	//add new text menu entries here
-	private	static final String TITLE = "Choose Shape to draw:";
+	//private static final String[] ITEMS = {"Anchor"};	//add new text menu entries here
+	//private	static final String TITLE = "Choose Shape to draw:";
+	private static final String TITLE = "Select :";
+	private static final String[] ITEMS = {"Calibration","Diamond","Anchor"};
 	private TextMenu menu;
-
+	private Plotbot Robot;
+	
 	/**
 	 * Creates a new MainMenu object.
 	 */
+	
 	public MainMenu() {
+		Robot= new Plotbot();
+		
+		menu = new TextMenu(ITEMS,1,TITLE);
+		 int selection = -1;
+		 do {
+		 selection = menu.select();
+		 } while(selection < 0);
+		 while(Button.ENTER.isDown()) {}
+		 Plottable toDraw = null;
+		 if (selection == 0) {
+		 toDraw = new calibration();
+		 } //else if (selection == 1) {
+		// toDraw = new Diamond();
+		// } else if (selection == 2) {
+		// toDraw = new Anchor();
+		 //}
 		menu = new TextMenu(ITEMS, 1, TITLE);
+		
 	}
+	/*
 	public Plottable select(){
 		int selection = -1;
 		do{
-		SimpleIO.print("\n\n*** Main Menu ***\n");
-		SimpleIO.print("1) Store a Packet\n");
-		SimpleIO.print("2) Retrieve a packet\n");
-		SimpleIO.print("3) Quit\n");
-		selection=SimpleIO.readInt();
+		LCD.clear();
+		LCD.drawString("*** Main Menu ***",0,0);
+		LCD.drawString("Enter Button Calibrate",0,1);
+		LCD.drawString("2) Retrieve a packet",0,2);
+		LCD.drawString("3) Quit",0,3);
+		//selection=SimpleIO.readInt();
+		Button.ENTER.addButtonListener();
+		
 		switch (selection){
 		case 1:
 			
+			Robot.Calibration();
 			break;
 			
 		case 2:
@@ -42,15 +68,33 @@ public class MainMenu {
 		
 		}while(selection != 3);
 			selection = menu.select();
+				
+			
 		
 
-		while(Button.ENTER.isDown()) {
-		}
+		//while(Button.ENTER.isDown()) {
+		//}
 		Plottable toDraw = null;
-		if (selection == 0) {
-			toDraw = new Anchor();
+		//if (selection == 0) {
+			//toDraw = new Anchor();
 			//Think about what you have to do to start the drawing routine
-		}
+		//}
 		return toDraw;
 	}
+
+	@Override
+	public void buttonPressed(Button arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void buttonReleased(Button arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+*/
 }

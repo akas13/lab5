@@ -6,6 +6,8 @@ public class Coordinates {
 	private double Radians;
 	private double Degrees;
 	private int PenArmLength;
+	private int WheelDiam;
+	private double WheelCir;
 	
 	public Coordinates(){
 		Xcoord = 0.0;
@@ -13,6 +15,8 @@ public class Coordinates {
 		Radians = 0.0;
 		Degrees = 0.0;
 		PenArmLength = 80;			//This distance is represented in mm
+		WheelDiam = 56;
+		WheelCir = WheelDiam + Math.PI;
 	}
 	
 	public void coordinatesToDegrees(double xcoord, double ycoord){
@@ -20,10 +24,11 @@ public class Coordinates {
 		Degrees = (Radians / Math.PI) * 180;
 	}
 	
-	public void degreesToCoordinates(double degrees){
-		Radians = (degrees / 180) * Math.PI;
+	public void degreesToCoordinates(double degreesArm, double degreesWheels){
+		Radians = (degreesArm / 180) * Math.PI;
+		double revolutions = degreesWheels / 360;
 		Xcoord = PenArmLength * Math.cos(Radians);
-		Ycoord = PenArmLength * Math.sin(Radians);
+		Ycoord = PenArmLength * Math.sin(Radians) + WheelCir * revolutions;
 	}
 	
 	public double getXcoord(){

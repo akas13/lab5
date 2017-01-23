@@ -1,6 +1,53 @@
 package de.tuhh.diss.plotbot;
 
 public class Coordinates {
-//holds values for coordinates of motor (rotational) and drawing (x,y)
+	private double Xcoord;
+	private double Ycoord;
+	private double Radians;
+	private double Degrees;
+	private int PenArmLength;
 	
+	public Coordinates(){
+		Xcoord = 0.0;
+		Ycoord = 0.0;
+		Radians = 0.0;
+		Degrees = 0.0;
+		PenArmLength = 80;			//This distance is represented in mm
+	}
+	
+	public void coordinatesToDegrees(double xcoord, double ycoord){
+		Radians = Math.atan(ycoord / xcoord);
+		Degrees = (Radians / Math.PI) * 180;
+	}
+	
+	public void degreesToCoordinates(double degrees){
+		Radians = (degrees / 180) * Math.PI;
+		Xcoord = PenArmLength * Math.cos(Radians);
+		Ycoord = PenArmLength * Math.sin(Radians);
+	}
+	
+	public double getXcoord(){
+		return Xcoord;
+	}
+	
+	public void setXcoord(double xcoord){
+		Xcoord = xcoord;
+	}
+	
+	public double getYcoord(){
+		return Ycoord;
+	}
+	
+	public void setYcoord(double ycoord){
+		Ycoord = ycoord;
+	}
+	
+	public double getDegrees(){
+		return Degrees;
+	}
+	
+	public void setDegrees(double degrees){
+		Degrees = degrees;
+	}
+
 }

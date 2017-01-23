@@ -11,77 +11,88 @@ import lejos.nxt.*;
  * method plot of the selected shape.
  */
 public class PlotbotControl implements SensorPortListener{
-	private int StartDis;
-	private int WheelDiam;
-	private int PenArmLength;
-	private int SensorArmLength;
-	private int PenHeight;
-	private int GRArm;
-	private int GRWheel;
-	private int LightBool; 						//light threshold
-	private LightSensor light;
-	private TouchSensor touchSwivel;			//Touch sensor for the swivel arm
-	private TouchSensor touchPen;
+	 						
+	private int LightBool;						//light threshold
+	private LightSensor Light;
+	private TouchSensor TouchSwivel;			//Touch sensor for the swivel arm
+	private TouchSensor TouchPen;
 	private int ORIGIN;
 	private int ARMMAX;
 	private int PENMAX;
 	private int ZEROPOSITIONARM;
 
 	public PlotbotControl(){
-		WheelDiam=56;
-		StartDis=230;
-		PenArmLength=80;
-		SensorArmLength=105;
-		GRArm=84;
-		GRWheel=5;
-		LightBool=500; //maybe
+		LightBool = 500; //maybe
 	}
 
-	public double SwivelArm (int degree){
-		double armAngle=0.0;
-		Motor.A.rotateTo(degree);			//Still need to account for the MAX position of arm
-		return armAngle;
+	public void SwivelArm (double degree) throws Exception{
+		int roundeddegree = (int) Math.round(degree);
+		if (degree + Motor.A.getPosition() < ARMMAX)
+		Motor.A.rotate(roundeddegree);			//Still need to account for the MAX position of arm
+		else 
+			throw new Exception("This movement will exceed the robots range of motion.");
 	}
 	
-	public boolean SwivelPen (int degree){
-		boolean up=false;
-		Motor.B.rotateTo(degree);			//Still need to account for the MAX position of the pen
-		return up;
+	public void SwivelPen (int degree) throws Exception{
+		if (degree + Motor.B.getPosition() < PENMAX)
+		Motor.B.rotate(degree);					//Still need to account for the MAX position of the pen
+		else 
+			throw new Exception("This movement will exceed the robots range of motion.");
 	}
 	
-	public double Wheels (int degree){
-		double wheelPos=0.0;
-		Motor.C.rotateTo(degree);
-		return wheelPos;
+	public void Wheels (double degree) throws Exception{
+		int roundeddegree = (int) Math.round(degree);
+		if (degree + Motor.C.getPosition() > ORIGIN)
+		Motor.C.rotateTo(roundeddegree);
+		else 
+			throw new Exception("This movement will exceed the robots origin position.");
 	}
 	
 	public boolean Calibration(){
 		boolean calibration = false;
-		light = new LightSensor(SensorPort.S3, false);
-		touchSwivel = new TouchSensor(SensorPort.S1);
-		touchPen = new TouchSensor(SensorPort.S2);
+		Light = new LightSensor(SensorPort.S3, false);
+		TouchSwivel = new TouchSensor(SensorPort.S1);
+		TouchPen = new TouchSensor(SensorPort.S2);
 		
-		while (light.getLightValue() > LightBool){
+		Light.setFloodlight(true);
+		while (Light.getLightValue() > LightBool){
 			Motor.C.forward();
 		}
 		ORIGIN = Motor.C.getPosition();
+		Light.setFloodlight(false);
 		
 		ZEROPOSITIONARM = Motor.A.getPosition(); 
-		while (touchSwivel.isPressed() != true){
+		while (TouchSwivel.isPressed() != true){
 			Motor.A.forward();
 		}
 		ARMMAX = Motor.A.getPosition();
 		Motor.A.rotateTo(ZEROPOSITIONARM);
 		
-		while (touchPen.isPressed() != true){
+		while (TouchPen.isPressed() != true){
 			Motor.B.backward();
 		}
 		PENMAX = Motor.B.getPosition();
 		calibration = true;
 		return calibration;
 	}
+	
+	public int getORIGIN(){
+		return ORIGIN;
+	}
+	
+	public int getARMMAX(){
+		return ARMMAX;
+	}
+	
+	public int getPENMAX(){
+		return PENMAX;
+	}
+	
+	public int getZEROPOSITIONARM(){
+		return ZEROPOSITIONARM;
+	}
 
-	@Override
+	//@Override
 	public void stateChanged(SensorPort arg0, int arg1, int arg2) {
 		// TODO Auto-generated method stub
 		
@@ -90,5 +101,3 @@ public class PlotbotControl implements SensorPortListener{
 	
 		
 	}
-	
-

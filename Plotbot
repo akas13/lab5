@@ -4,10 +4,32 @@ import lejos.nxt.Button;
 import lejos.nxt.LCD;
 
 public class Plotbot {
+	
 	private PlotbotControl ControllerClass;
+	public Coordinates BotPosition;
+	private int StartDis;
+	private int WheelDiam;
+	private double WheelCir;
+	private int PenArmLength;
+	private int SensorArmLength;
+	private int PenHeight;
+	private int GRArm;
+	private int GRWheel;
+	private double Degrees;
+	
+	
 	public Plotbot(){
 		ControllerClass= new PlotbotControl();
+		BotPosition = new Coordinates();
+		WheelDiam = 56;
+		WheelCir = WheelDiam + Math.PI;
+		StartDis = 230;
+		PenArmLength = 80;
+		SensorArmLength = 105;
+		GRArm = 84;
+		GRWheel = 5;
 	}
+	
 	public static void main(String[] args)
 	{
 		// Some example code to check if the build process works
@@ -20,8 +42,59 @@ public class Plotbot {
 		//Plottable s = myMainMenu.select();
 		//TODO: Call methods to plot the selected shape. Be careful to not draw anything, if the robot angles are not yet calibrated!
 	}
+	
+	public void moveToX(double xcoord, double ycoord){
+		BotPosition.coordinatesToDegrees(xcoord, ycoord);
+		Degrees = BotPosition.getDegrees();
+		try {
+			ControllerClass.SwivelArm(Degrees);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void moveToY(double xcoord, double ycoord){
+		double y = Math.sqrt(Math.pow(PenArmLength, 2) - Math.pow(xcoord, 2));
+		double ytravel = ycoord - y;
+		double Degrees = (ytravel / WheelCir) * 360;
+		try {
+			ControllerClass.Wheels(Degrees);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void verticalMove(int length){
+		double Degrees = (length / WheelCir) * 360;
+		try {
+			ControllerClass.Wheels(Degrees);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void movePenUp(boolean Up){
+		if (Up == true){
+			try {
+				ControllerClass.SwivelPen(ControllerClass.getPENMAX());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			try {
+				ControllerClass.SwivelPen(30);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public void Calibration (){
 		ControllerClass.Calibration();
 	}
 }
-

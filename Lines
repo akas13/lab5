@@ -6,20 +6,15 @@ public class Lines {
 
 	*/
 	
-	private double ystart;
-	private double yend;
-	private double dy;
-	private double xstart;
-	private double xend;
-	private double dx;
 	
-	private int CoordX;
-	private int CoordY;
+	private double dx;
+	private double CoordX;
+	private double CoordY;
 	private int Length;
 	private Plotbot Robot;				//This should not be here
 	public Coordinates BotPosition;		//This should not be here
 	
-	private Line(int x, int y, int size){
+	private Lines(int x, int y, int size){
 		CoordX = x;
 		CoordY = y;
 		Length = size;
@@ -43,19 +38,30 @@ public class Lines {
 		Robot.movePenUp(false);
 		Robot.verticalMove(Length);
 		Robot.movePenUp(true);
-		class.method=(length)
-		coordY=coordY+length;
+		Plotbot.toDraw=(Length);		// needed?
+		CoordY=CoordY+Length;
 	}
 	
 	public void horizontalLine(){
-		
-		for (int dx=Length*.1; dx<Length; dx++){
+		dx=Length*.1; 				//.1 need to change to a variable ratio
+		while(dx<Length){
 			CoordX=dx;
-			CoordY=dx/2;
+		CoordY=dx/2.0;
+		
+		dx++;
 		}
 	}
 	
 	public void diagonalLine(){
+		double currentLength=Math.sqrt(CoordX*CoordX+CoordY+CoordY);
+		while (currentLength<Length){
+			CoordX=dx+CoordX;
+			CoordY=-dx;
+			
+			currentLength++;
+		}
+
+	
 		
 	}
 	

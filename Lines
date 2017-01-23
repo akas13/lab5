@@ -1,20 +1,30 @@
 package de.tuhh.diss.plotbot;
 
-public class Lines {
+public class Line {
 //three methods horizontal, vertical, and diagonal that will be called by shapes
 	
-	private int coordX;
-	private int coordY;
-	private int length;
+	private int CoordX;
+	private int CoordY;
+	private int Length;
+	private Plotbot Robot;				//This should not be here
+	public Coordinates BotPosition;		//This should not be here
 	
-	private Lines(int x, int y, int size){
-		coordX= x;
-		coordY= y;
-		length = size;
+	private Line(int x, int y, int size){
+		CoordX = x;
+		CoordY = y;
+		Length = size;
+		Robot = new Plotbot();
+		BotPosition = new Coordinates();
 	}
 	
 	public void verticalLine(){
-		
+		Robot.moveToX(CoordX, CoordY);
+		BotPosition.setXcoord(CoordX);
+		Robot.moveToY(CoordX, CoordY);
+		BotPosition.setYcoord(CoordY);
+		Robot.movePenUp(false);
+		Robot.verticalMove(Length);
+		Robot.movePenUp(true);
 	}
 	
 	public void horizontalLine(){
@@ -26,4 +36,3 @@ public class Lines {
 	}
 	
 }
-

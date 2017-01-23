@@ -58,9 +58,11 @@ public class PlotbotControl implements SensorPortListener{
 		while (Light.getLightValue() > LightBool){
 			Motor.C.forward();
 		}
+		Motor.C.resetTachoCount();
 		ORIGIN = Motor.C.getPosition();
 		Light.setFloodlight(false);
 		
+		Motor.A.resetTachoCount();
 		ZEROPOSITIONARM = Motor.A.getPosition(); 
 		while (TouchSwivel.isPressed() != true){
 			Motor.A.forward();
@@ -71,6 +73,7 @@ public class PlotbotControl implements SensorPortListener{
 		while (TouchPen.isPressed() != true){
 			Motor.B.backward();
 		}
+		Motor.B.resetTachoCount();
 		PENMAX = Motor.B.getPosition();
 		calibration = true;
 		return calibration;

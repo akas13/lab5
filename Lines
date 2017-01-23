@@ -1,7 +1,17 @@
 package de.tuhh.diss.plotbot;
 
-public class Line {
-//three methods horizontal, vertical, and diagonal that will be called by shapes
+public class Lines {
+/*three methods horizontal, vertical, and diagonal that will be called by shapes, similar to packet class. lines takes in size
+ *from the shape. will out x and y coordinates back to shape, shape will then ask plotbot for angles given x,y
+
+	*/
+	
+	private double ystart;
+	private double yend;
+	private double dy;
+	private double xstart;
+	private double xend;
+	private double dx;
 	
 	private int CoordX;
 	private int CoordY;
@@ -17,6 +27,14 @@ public class Line {
 		BotPosition = new Coordinates();
 	}
 	
+	public double getXcoord(){
+		
+	return CoordX;
+	}
+	public double getYCoord(){
+	
+	return CoordY;
+	}
 	public void verticalLine(){
 		Robot.moveToX(CoordX, CoordY);
 		BotPosition.setXcoord(CoordX);
@@ -25,10 +43,16 @@ public class Line {
 		Robot.movePenUp(false);
 		Robot.verticalMove(Length);
 		Robot.movePenUp(true);
+		class.method=(length)
+		coordY=coordY+length;
 	}
 	
 	public void horizontalLine(){
 		
+		for (int dx=Length*.1; dx<Length; dx++){
+			CoordX=dx;
+			CoordY=dx/2;
+		}
 	}
 	
 	public void diagonalLine(){

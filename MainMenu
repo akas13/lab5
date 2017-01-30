@@ -12,14 +12,18 @@ public class MainMenu implements ButtonListener {
 	private static final String TITLE = "Select :";
 	private static final String[] ITEMS = {"Calibration","Diamond","Anchor"};
 	private TextMenu menu;
-	private Plotbot Robot;
+	private Plotbot robot;
+	private PlotbotControl botControl;
+	private Anchor drawAnchor;
+	private Square drawSquare;
 	
 	/**
 	 * Creates a new MainMenu object.
 	 */
 	
-	public MainMenu() {
-		Robot= new Plotbot();
+/*	public MainMenu() {
+		robot= new Plotbot();
+		botControl = new PlotbotControl();
 		
 		menu = new TextMenu(ITEMS,1,TITLE);
 		 int selection = -1;
@@ -29,7 +33,7 @@ public class MainMenu implements ButtonListener {
 		 while(Button.ENTER.isDown()) {}
 		 Plottable toDraw = null;
 		 if (selection == 0) {
-		 toDraw = new calibration();
+		 toDraw = new Calibration();
 		 } //else if (selection == 1) {
 		// toDraw = new Diamond();
 		// } else if (selection == 2) {
@@ -37,34 +41,105 @@ public class MainMenu implements ButtonListener {
 		 //}
 		menu = new TextMenu(ITEMS, 1, TITLE);
 		
+	} */
+	
+	private static void FrontMenu() {					//Top Menu method
+		   LCD.clear();
+		   LCD.drawString("*** Main Menu ***",0,0);
+		   LCD.drawString("1) Enter Button Calibrate",0,1);
+		   LCD.drawString("2) Make a Shape",0,2);
+		   LCD.drawString("3) Quit",0,3);
 	}
-	/*
-	public Plottable select(){
+	
+	private static void Size() {					//This method will ask user to enter pre-defined sizes
+			LCD.clear();
+			LCD.drawString("*****Choose a Size?******", 0, 0);
+			LCD.drawString("1) Small ", 0, 1);
+			LCD.drawString("2) Large ", 0, 2);
+			LCD.drawString("3) Go Back", 0, 3);
+	}
+
+	
+	public MainMenu(){
+		robot= new Plotbot();
+		botControl = new PlotbotControl();
+		
 		int selection = -1;
 		do{
-		LCD.clear();
-		LCD.drawString("*** Main Menu ***",0,0);
-		LCD.drawString("Enter Button Calibrate",0,1);
-		LCD.drawString("2) Retrieve a packet",0,2);
-		LCD.drawString("3) Quit",0,3);
-		//selection=SimpleIO.readInt();
-		Button.ENTER.addButtonListener();
+		   FrontMenu();
+		   //selection=SimpleIO.readInt();
+		   Button.ENTER.addButtonListener(this);
 		
-		switch (selection){
-		case 1:
+		   switch (selection){
+		   case 1:
+			 botControl.Calibration();
+			 break;
 			
-			Robot.Calibration();
-			break;
+		   case 2:
+			 int selection2 = -1;
+			 do{
+				LCD.clear();
+				LCD.drawString("*****Which Shape?******", 0, 0);
+				LCD.drawString("1) Anchor", 0, 1);
+				LCD.drawString("2) Diamond/Square", 0, 2);
+				LCD.drawString("3) Go Back", 0, 3);
+				Button.ENTER.addButtonListener(this);
+				int selection3 = -1;
+				
+				switch (selection2){
+				case 1:						//Anchor Drawing Routine
+					do {
+					Size();		
+						Button.ENTER.addButtonListener(this);
+						switch (selection3){
+						case 1:
+											// call method for reading size of Large and draw Anchor
+							drawAnchor = new Anchor();
+						case 2:
+											// call method for reading size of small
+							drawSquare = new Square();
+						case 3:
+					
+							break; 					// Go back to menu
+						 
+					    }
+					}	while(selection3 != 3);
+					 selection3 = menu.select();
+					
+				case 2:						// Square Drawing Routine
+					do {
+					Size();		
+						Button.ENTER.addButtonListener(this);
+						switch (selection3){
+						case 1:
+											// call method for reading size of Large and draw Square
+						case 2:
+											// call method for reading size of small
+						case 3:
+					
+							break; 					// Go back to menu
+						 
+					    }
+					}	while(selection3 != 3);
+					 selection3 = menu.select();
+					
+				case 3:
+												//Insert code for calling the main menu screen
+					break;
+
+				
+				}
 			
-		case 2:
+			  }while(selection2 != 3);
+			  selection2 = menu.select();
 			
-			break;
+			  break;
 			
-		case 3:
-			
-			break;
+		    case 3:
+		    									// Quit Program
+			  break;
 		
-		}
+		 }
 		
 		}while(selection != 3);
 			selection = menu.select();
@@ -74,12 +149,12 @@ public class MainMenu implements ButtonListener {
 
 		//while(Button.ENTER.isDown()) {
 		//}
-		Plottable toDraw = null;
+		//Plottable toDraw = null;
 		//if (selection == 0) {
 			//toDraw = new Anchor();
 			//Think about what you have to do to start the drawing routine
 		//}
-		return toDraw;
+		//return toDraw;
 	}
 
 	@Override
@@ -96,5 +171,5 @@ public class MainMenu implements ButtonListener {
 
 
 
-*/
+
 }
